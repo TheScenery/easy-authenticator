@@ -1,16 +1,18 @@
+import { Header } from '../components/Header';
 import { PasswordItem } from '../components/PasswordItem';
 
 @Entry
 @Component
 struct Index {
-
   build() {
-    RelativeContainer() {
-      List(){
-        ListItem(){
+    Column() {
+      Header()
+      List() {
+        ListItem() {
           PasswordItem()
         }
-        ListItem(){
+
+        ListItem() {
           PasswordItem()
         }
       }.divider({
@@ -19,5 +21,6 @@ struct Index {
     }
     .height('100%')
     .width('100%')
+    .alignItems(HorizontalAlign.Start)
   }
 }
