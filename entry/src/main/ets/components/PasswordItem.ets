@@ -4,13 +4,36 @@ import { formatCode } from "../utils/formatter"
 @Preview
 @Component
 export struct PasswordItem {
+  @State time: number = Date.now();
+  intervalId: number | null = null;
+
+  render(): void {
+    this.time = Date.now();
+  }
+
+  aboutToAppear(): void {
+    this.render();
+    this.intervalId = setInterval(() => {
+      this.render();
+    }, 1000)
+  }
+
+  aboutToDisappear(): void {
+    if (this.intervalId !== null) {
+      clearInterval(this.intervalId)
+    }
+  }
+
   build() {
     Column() {
       Row() {
         Column() {
           Text("Github").fontWeight(FontWeight.Medium).fontSize(16)
-          Text("TheScenery").fontSize(14).fontColor($r('sys.color.font_secondary'))
-          Text(formatCode(getCode())).fontWeight(FontWeight.Bold).fontSize(18).fontColor($r('sys.color.font_emphasize'))
+          Text("TheScenery").fontSize(14).fontColor($r('sys.color.font_secondary')).margin({ top: 2 })
+          Text(formatCode(getCode(this.time)))
+            .fontWeight(FontWeight.Bold)
+            .fontSize(18)
+            .fontColor($r('sys.color.font_emphasize')).margin({ top: 2 })
         }
         .alignItems(HorizontalAlign.Start)
 

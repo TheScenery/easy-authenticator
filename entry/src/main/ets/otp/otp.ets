@@ -30,7 +30,6 @@ const getHash = (message: string, macAlgName: string, keyString: string) => {
   // 数据量较少时，可以只做一次update，将数据全部传入，接口未对入参长度做限制
   mac.updateSync({ data: new Uint8Array(buffer.from(message, 'hex').buffer) });
   let macResult = mac.doFinalSync();
-  console.log('origin hmac:', macResult.data);
   return buffer.from(macResult.data).toString('hex')
 }
 
@@ -89,15 +88,11 @@ const base32tohex = (base32: string): string => {
 }
 
 
-export const getCode = () => {
+export const getCode = (time: number) => {
   const config = getConfig();
-  const epoch = Math.round(Date.now() / 1000)
+  const epoch = Math.round(time / 1000)
   let counter = Math.floor(epoch / config.period);
-
-  console.log('counter is: ', counter.toString(16));
   const hmac = getHash(leftpad(counter.toString(16), 16, "0"), config.algorithm, base32tohex(config.secret))
-  console.log('hmac:', hmac)
-
   const offset = hex2dec(hmac.substring(hmac.length - 1));
 
   let otp =
