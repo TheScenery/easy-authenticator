@@ -1,14 +1,16 @@
-import { getCode } from "../otp/otp"
+import { generate, getConfig } from "../otp/otp"
+import { OtpConfig, OtpResult } from "../otp/type";
 import { formatCode } from "../utils/formatter"
 
 @Preview
 @Component
 export struct PasswordItem {
-  @State time: number = Date.now();
   intervalId: number | null = null;
+  config: OtpConfig = getConfig();
+  @State otpResult: OtpResult = generate(this.config, Date.now());
 
   render(): void {
-    this.time = Date.now();
+    this.otpResult = generate(this.config, Date.now());
   }
 
   aboutToAppear(): void {
@@ -28,9 +30,9 @@ export struct PasswordItem {
     Column() {
       Row() {
         Column() {
-          Text("Github").fontWeight(FontWeight.Medium).fontSize(16)
-          Text("TheScenery").fontSize(14).fontColor($r('sys.color.font_secondary')).margin({ top: 2 })
-          Text(formatCode(getCode(this.time)))
+          Text(this.config.issuer).fontWeight(FontWeight.Medium).fontSize(16)
+          Text(this.config.label).fontSize(14).fontColor($r('sys.color.font_secondary')).margin({ top: 2 })
+          Text(formatCode(this.otpResult.code))
             .fontWeight(FontWeight.Bold)
             .fontSize(18)
             .fontColor($r('sys.color.font_emphasize')).margin({ top: 2 })
@@ -38,7 +40,7 @@ export struct PasswordItem {
         .alignItems(HorizontalAlign.Start)
 
         Column() {
-          Image($r('sys.media.ohos_ic_public_arrow_right')).width(24).aspectRatio(1)
+          Image($r('sys.media.ohos_ic_public_arrow_right')).width(24)
         }
       }
       .width("100%")
@@ -46,9 +48,9 @@ export struct PasswordItem {
 
       Row() {
         Progress({
-          value: 20,
-          total: 30,
-        })
+          value: this.otpResult.current,
+          total: this.otpResult.total,
+        }).backgroundColor($r("sys.color.comp_background_emphasize")).color($r("sys.color.gray_04"))
       }
       .margin({ top: 8 })
     }

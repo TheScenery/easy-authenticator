@@ -7,3 +7,9 @@ export interface OtpConfig {
   digits: number;
   period: number;
 }
+
+export interface OtpResult {
+  code: string;
+  total: number;
+  current: number;
+}

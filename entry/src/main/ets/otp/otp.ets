@@ -1,8 +1,8 @@
-import { OtpConfig } from "./type"
+import { OtpConfig, OtpResult } from "./type"
 import { cryptoFramework } from "@kit.CryptoArchitectureKit";
 import { buffer, util } from "@kit.ArkTS";
 
-const getConfig = (): OtpConfig => {
+export const getConfig = (): OtpConfig => {
   // otpauth://totp/GitHub:evilsophietheking?secret=ECX3VKG4XX2D5V55&issuer=GitHub
   return {
     type: "TOTP",
@@ -99,4 +99,21 @@ export const getCode = (time: number) => {
     (hex2dec(hmac.substr(offset * 2, 8)) & hex2dec("7fffffff")) + "";
 
   return otp.substring(otp.length - 6);
+}
+
+export const generate = (config: OtpConfig, time: number): OtpResult => {
+  const epoch = Math.round(time / 1000)
+  let counter = Math.floor(epoch / config.period);
+  const hmac = getHash(leftpad(counter.toString(16), 16, "0"), config.algorithm, base32tohex(config.secret))
+  const offset = hex2dec(hmac.substring(hmac.length - 1));
+
+  let otp =
+    (hex2dec(hmac.substr(offset * 2, 8)) & hex2dec("7fffffff")) + "";
+
+  const code = otp.substring(otp.length - 6);
+  return {
+    code,
+    total: config.period,
+    current: epoch % config.period,
+  }
 }
