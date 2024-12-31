@@ -2,6 +2,7 @@ import { Header } from '../components/Header';
 import { PasswordItem } from '../components/PasswordItem';
 import { OtpConfig } from '../otp/type';
 import { hilog } from '@kit.PerformanceAnalysisKit';
+import { addConfig, getConfigs } from '../datamodule/datamodule';
 
 @Entry
 @ComponentV2
@@ -13,6 +14,14 @@ struct Index {
   render(): void {
     hilog.info(0x0001, '[Easy authenticator]', `regenerate otp`)
     this.time = Date.now();
+  }
+
+  async loadConfigs() {
+    this.configs = await getConfigs();
+  }
+
+  aboutToAppear(): void {
+    this.loadConfigs();
   }
 
   onPageShow(): void {
@@ -28,8 +37,10 @@ struct Index {
     }
   }
 
-  addNew(config: OtpConfig) {
-    this.configs.push(config)
+  async addNew(config: OtpConfig) {
+    this.configs.push(config);
+    await addConfig(config);
+    this.loadConfigs();
   }
 
   @Builder
