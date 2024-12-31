@@ -32,18 +32,34 @@ struct Index {
     this.configs.push(config)
   }
 
+  @Builder
+  buildListView() {
+    List() {
+      ForEach(this.configs, (config: OtpConfig) => {
+        ListItem() {
+          PasswordItem({ config, time: this.time })
+        }
+      }, (config: OtpConfig) => config.secret)
+    }.divider({
+      strokeWidth: 2
+    })
+  }
+
+  @Builder
+  buildEmptyView() {
+    Row() {
+      Text("Please use the '+' button to add account")
+    }.justifyContent(FlexAlign.Center).width('100%').margin({ top: 12 })
+  }
+
   build() {
     Column() {
       Header({ addNew: this.addNew.bind(this) })
-      List() {
-        ForEach(this.configs, (config: OtpConfig) => {
-          ListItem() {
-            PasswordItem({ config, time: this.time })
-          }
-        }, (config: OtpConfig) => config.secret)
-      }.divider({
-        strokeWidth: 2
-      })
+      if (this.configs.length > 0) {
+        this.buildListView()
+      } else {
+        this.buildEmptyView()
+      }
     }
     .height('100%')
     .width('100%')
