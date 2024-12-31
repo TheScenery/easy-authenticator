@@ -3,9 +3,9 @@ import { hilog } from "@kit.PerformanceAnalysisKit";
 import { OtpConfig } from "../otp/type";
 import { parseUrl } from "../otp/util";
 
-@Component
+@ComponentV2
 export struct Header {
-  addNew?: (config: OtpConfig) => void
+  @Event addNew?: (config: OtpConfig) => void
 
   processScanResult(value: string) {
     if (this.addNew) {

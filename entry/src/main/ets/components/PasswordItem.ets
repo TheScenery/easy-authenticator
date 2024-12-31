@@ -1,31 +1,17 @@
 import { generate } from "../otp/otp"
 import { OtpConfig, OtpResult } from "../otp/type";
 import { formatCode } from "../utils/formatter"
-import { hilog } from "@kit.PerformanceAnalysisKit";
 
 @Preview
-@Component
+@ComponentV2
 export struct PasswordItem {
   intervalId: number | null = null;
-  @Prop config: OtpConfig;
-  @State otpResult: OtpResult = generate(this.config, Date.now());
+  @Param @Require config: OtpConfig;
+  @Param @Require time: number;
 
-  render(): void {
-    hilog.info(0x0001, '[Password Item]', `render...`)
-    this.otpResult = generate(this.config, Date.now());
-  }
-
-  aboutToAppear(): void {
-    this.render();
-    this.intervalId = setInterval(() => {
-      this.render();
-    }, 1000)
-  }
-
-  aboutToDisappear(): void {
-    if (this.intervalId !== null) {
-      clearInterval(this.intervalId)
-    }
+  @Computed
+  get otpResult(): OtpResult {
+    return generate(this.config, this.time);
   }
 
   build() {
