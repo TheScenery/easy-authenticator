@@ -1,15 +1,17 @@
-import { generate, getConfig } from "../otp/otp"
+import { generate } from "../otp/otp"
 import { OtpConfig, OtpResult } from "../otp/type";
 import { formatCode } from "../utils/formatter"
+import { hilog } from "@kit.PerformanceAnalysisKit";
 
 @Preview
 @Component
 export struct PasswordItem {
   intervalId: number | null = null;
-  config: OtpConfig = getConfig();
+  @Prop config: OtpConfig;
   @State otpResult: OtpResult = generate(this.config, Date.now());
 
   render(): void {
+    hilog.info(0x0001, '[Password Item]', `render...`)
     this.otpResult = generate(this.config, Date.now());
   }
 

@@ -1,5 +1,38 @@
+import { scanBarcode, scanCore } from "@kit.ScanKit";
+import { hilog } from "@kit.PerformanceAnalysisKit";
+import { OtpConfig } from "../otp/type";
+import { parseUrl } from "../otp/util";
+
 @Component
 export struct Header {
+  addNew?: (config: OtpConfig) => void
+
+  processScanResult(value: string) {
+    if (this.addNew) {
+      const parsedConfig = parseUrl(value);
+      if (parsedConfig) {
+        this.addNew(parsedConfig);
+      }
+    }
+  }
+
+  async scanCode() {
+    let options: scanBarcode.ScanOptions = {
+      scanTypes: [scanCore.ScanType.QR_CODE],
+      enableMultiMode: true,
+      enableAlbum: true
+    };
+    try {
+      const result = await scanBarcode.startScanForResult(getContext(this), options);
+      hilog.info(0x0001, '[Scan QRcode]',
+        `Succeeded in getting ScanResult by promise with options, result is ${JSON.stringify(result)}`);
+      this.processScanResult(result.originalValue);
+    } catch (error) {
+      hilog.error(0x0001, '[Scan CPSample]',
+        `Failed to start the scanning service. Code:${error.code}, message: ${error.message}`);
+    }
+  }
+
   build() {
     Row() {
       Column() {
@@ -9,12 +42,17 @@ export struct Header {
       Column() {
         Button() {
           Image($r('sys.media.ohos_ic_public_add')).height(24).aspectRatio(1)
-        }.padding(2).backgroundColor($r('sys.color.comp_background_tertiary'))
+        }.padding(2).backgroundColor($r('sys.color.comp_background_tertiary')).onClick(this.scanCode.bind(this))
       }
     }
     .width("100%")
     .justifyContent(FlexAlign.SpaceBetween)
-    .padding({ left: 16, right: 16, bottom: 14, top: 14 })
+    .padding({
+      left: 16,
+      right: 16,
+      bottom: 14,
+      top: 14
+    })
     .border({
       width: { bottom: 2 },
       color: $r('sys.color.comp_background_tertiary'),

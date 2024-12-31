@@ -3,7 +3,6 @@ import { cryptoFramework } from "@kit.CryptoArchitectureKit";
 import { buffer, util } from "@kit.ArkTS";
 
 export const getConfig = (): OtpConfig => {
-  // otpauth://totp/GitHub:evilsophietheking?secret=ECX3VKG4XX2D5V55&issuer=GitHub
   return {
     type: "TOTP",
     label: "GitHub:evilsophietheking",

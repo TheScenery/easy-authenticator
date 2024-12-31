@@ -1,20 +1,25 @@
 import { Header } from '../components/Header';
 import { PasswordItem } from '../components/PasswordItem';
+import { OtpConfig } from '../otp/type';
 
 @Entry
 @Component
 struct Index {
+  @State configs: OtpConfig[] = []
+
+  addNew(config: OtpConfig) {
+    this.configs.push(config)
+  }
+
   build() {
     Column() {
-      Header()
+      Header({ addNew: this.addNew.bind(this) })
       List() {
-        ListItem() {
-          PasswordItem()
-        }
-
-        ListItem() {
-          PasswordItem()
-        }
+        ForEach(this.configs, (config: OtpConfig) => {
+          ListItem() {
+            PasswordItem({ config })
+          }
+        }, (config: OtpConfig) => config.secret)
       }.divider({
         strokeWidth: 2
       })
