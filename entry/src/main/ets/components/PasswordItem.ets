@@ -22,7 +22,7 @@ export struct PasswordItem {
           Text(this.config.label).fontSize(14).fontColor($r('sys.color.font_secondary')).margin({ top: 2 })
           Text(formatCode(this.otpResult.code))
             .fontWeight(FontWeight.Bold)
-            .fontSize(18)
+            .fontSize(42)
             .fontColor($r('sys.color.font_emphasize')).margin({ top: 2 })
         }
         .alignItems(HorizontalAlign.Start)

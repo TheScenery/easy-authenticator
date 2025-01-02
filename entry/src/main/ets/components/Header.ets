@@ -36,7 +36,7 @@ export struct Header {
   build() {
     Row() {
       Column() {
-        Text("EasyAuthenticator").fontSize(24).fontWeight(FontWeight.Bold)
+        Text($r("app.string.EntryAbility_label")).fontSize(24).fontWeight(FontWeight.Bold)
       }
 
       Column() {
@@ -50,8 +50,8 @@ export struct Header {
     .padding({
       left: 16,
       right: 16,
-      bottom: 14,
-      top: 14
+      bottom: 12,
+      top: 12
     })
     .border({
       width: { bottom: 2 },
