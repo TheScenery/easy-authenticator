@@ -4,7 +4,7 @@
     "vendor": "TheScenery",
     "versionCode": 1000000,
     "versionName": "1.0.0",
-    "icon": "$media:app_icon",
+    "icon": "$media:easy_otp",
     "label": "$string:app_name"
   }
 }
