@@ -41,7 +41,7 @@ export struct Header {
 
       Column() {
         Button() {
-          Image($r('sys.media.ohos_ic_public_add')).height(24).aspectRatio(1)
+          SymbolGlyph($r('sys.symbol.plus')).fontSize(24).aspectRatio(1)
         }.padding(2).backgroundColor($r('sys.color.comp_background_tertiary')).onClick(this.scanCode.bind(this))
       }
     }
