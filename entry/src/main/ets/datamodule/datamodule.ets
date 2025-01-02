@@ -11,3 +11,8 @@ export const addConfig = async (config: OtpConfig) => {
   const dataManager = DataManager.getInstance();
   await dataManager.put(config.secret, JSON.stringify(config));
 }
+
+export const deleteConfig = async (config: OtpConfig) => {
+  const dataManager = DataManager.getInstance();
+  await dataManager.delete(config.secret);
+}

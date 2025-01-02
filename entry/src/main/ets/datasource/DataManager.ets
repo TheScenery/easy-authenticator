@@ -39,7 +39,8 @@ export class DataManager {
       throw new Error("kvStore not initalized")
     }
     const entries = await this.kvStore.getEntries(KEY_PREFIX);
-    return entries.map((entry) => typeof entry.value.value === 'string' ? entry.value.value : "")
+    return entries.map((entry) => entry.value.type === distributedKVStore.ValueType.STRING ?
+      entry.value.value as string : "")
   }
 
   public async put(key: string, value: string) {

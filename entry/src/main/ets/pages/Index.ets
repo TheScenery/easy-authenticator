@@ -2,7 +2,7 @@ import { Header } from '../components/Header';
 import { PasswordItem } from '../components/PasswordItem';
 import { OtpConfig } from '../otp/type';
 import { hilog } from '@kit.PerformanceAnalysisKit';
-import { addConfig, getConfigs } from '../datamodule/datamodule';
+import { addConfig, deleteConfig, getConfigs } from '../datamodule/datamodule';
 
 @Entry
 @ComponentV2
@@ -37,10 +37,26 @@ struct Index {
     }
   }
 
+  async deleteConfig(config: OtpConfig) {
+    await deleteConfig(config);
+    this.loadConfigs();
+  }
+
   async addNew(config: OtpConfig) {
     this.configs.push(config);
     await addConfig(config);
     this.loadConfigs();
+  }
+
+  @Builder
+  itemEnd(config: OtpConfig) {
+    Row() {
+      Button() {
+        SymbolGlyph($r('sys.symbol.trash')).fontSize(24)
+      }
+      .padding(8).backgroundColor($r("sys.color.ohos_toggle_bg_transparent"))
+      .onClick(() => this.deleteConfig(config))
+    }.padding(4).justifyContent(FlexAlign.SpaceEvenly)
   }
 
   @Builder
@@ -49,7 +65,13 @@ struct Index {
       ForEach(this.configs, (config: OtpConfig) => {
         ListItem() {
           PasswordItem({ config, time: this.time })
-        }
+        }.swipeAction({
+          end: {
+            builder: () => {
+              this.itemEnd(config);
+            },
+          }
+        })
       }, (config: OtpConfig) => config.secret)
     }.divider({
       strokeWidth: 2
