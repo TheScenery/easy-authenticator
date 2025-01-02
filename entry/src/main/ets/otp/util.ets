@@ -8,7 +8,7 @@ export const parseUrl = (urlString: string): OtpConfig | null => {
     `The scaned url is: ${urlString}`);
   const parsedUrl = url.URL.parseURL(urlString);
   const type = parsedUrl.hostname.toUpperCase();
-  const label = parsedUrl.pathname.substring(1);
+  let label = parsedUrl.pathname.substring(1);
   const secret = parsedUrl.params.get("secret")
   const issuer = parsedUrl.params.get("issuer")
 
@@ -20,6 +20,10 @@ export const parseUrl = (urlString: string): OtpConfig | null => {
   }
   if (!issuer) {
     throw new Error("Can not extract issuer");
+  }
+
+  if (label.indexOf(":") !== -1) {
+    label = label.split(":")[1];
   }
 
 
