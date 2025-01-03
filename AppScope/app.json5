@@ -1,6 +1,6 @@
 {
   "app": {
-    "bundleName": "io.github.thescenery.easyauthenticator",
+    "bundleName": "io.github.thescenery.easyotp",
     "vendor": "TheScenery",
     "versionCode": 1000000,
     "versionName": "1.0.0",
