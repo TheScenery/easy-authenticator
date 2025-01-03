@@ -11,6 +11,10 @@
     {
       "name": "EntryAbility_label",
       "value": "极简OTP"
+    },
+    {
+      "name": "empty_tip",
+      "value": "使用右上角\"+\"添加账户"
     }
   ]
 }

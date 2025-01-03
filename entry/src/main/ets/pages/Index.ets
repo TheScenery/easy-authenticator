@@ -81,7 +81,7 @@ struct Index {
   @Builder
   buildEmptyView() {
     Row() {
-      Text("Please use the '+' button to add account")
+      Text($r("app.string.empty_tip"))
     }.justifyContent(FlexAlign.Center).width('100%').margin({ top: 12 })
   }
 

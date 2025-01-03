@@ -11,6 +11,10 @@
     {
       "name": "EntryAbility_label",
       "value": "EasyAuthenticator"
+    },
+    {
+      "name": "empty_tip",
+      "value": "Please use the '+' button to add account"
     }
   ]
 }

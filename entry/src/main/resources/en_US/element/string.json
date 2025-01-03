@@ -11,6 +11,10 @@
     {
       "name": "EntryAbility_label",
       "value": "EasyOTP"
+    },
+    {
+      "name": "empty_tip",
+      "value": "Please use the '+' button to add account"
     }
   ]
 }
