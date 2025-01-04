@@ -1,2 +1,2 @@
 # easy-authenticator
-A easy to use one-time passcode generators for Harmony OS
+A easy to use one-time passcode generator for Harmony OS
